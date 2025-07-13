@@ -23,10 +23,10 @@ app.config['SECRET_KEY'] = 'ini_secret_key_jwt'
 API_KEY = "api-key-1234"
 
 #  Konfigurasi Email 
-app.config['MAIL_SERVER'] = ''
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
-app.config['MAIL_USERNAME'] = ''    
-app.config['MAIL_PASSWORD'] = ''         
+app.config['MAIL_USERNAME'] = 'mcfatb33@gmail.com'    
+app.config['MAIL_PASSWORD'] = 'kixkudyjqfwymffd'         
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 
@@ -139,7 +139,14 @@ def login():
         'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=3)
     }, app.config['SECRET_KEY'], algorithm='HS256')
 
-    return jsonify({'status': 'berhasil', 'token': token})
+    return jsonify({
+        'status': 'berhasil',
+        'token': token,
+        'data': {
+            'email': user['email'],
+            'name': user.get('name', '')  
+        }
+    })
 
 
 @app.route('/protected', methods=['GET'])
@@ -150,4 +157,5 @@ def protected(current_user):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+   app.run(host="0.0.0.0", port=5000, debug=True)
+
